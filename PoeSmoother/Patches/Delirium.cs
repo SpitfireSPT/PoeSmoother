@@ -29,36 +29,42 @@ public class Delirium : IPatch
                     var bytes = record.Read();
                     string data = System.Text.Encoding.Unicode.GetString(bytes.ToArray());
 
+
                     if (string.IsNullOrEmpty(data)) continue;
 
                     if (data.Contains("Metadata/FmtParent") && !data.Contains("AnimatedRender"))
                     {
-                        data = "version 2\nextends \"Metadata/FmtParent\"";
+                        data = "version 3\nextends \"Metadata/FmtParent\"";
                     }
                     else if (data.Contains("Metadata/FmtParent") && data.Contains("AnimatedRender"))
                     {
-                        data = "version 2\nextends \"Metadata/FmtParent\"\n\nAnimatedRender\n{\n\tcannot_be_disabled = true\n}";
+                        data = "version 3\nextends \"Metadata/FmtParent\"\n\nclient\n{\n\tAnimatedRender\n\t{\n\t\tcannot_be_disabled = true\n\t}\n}";
                     }
-                    else if (data.Contains("default_animation = \"loop\""))
+                    else if (data.Contains("Metadata/Parent"))
                     {
-                        string[] separator = [Environment.NewLine];
-                        string[] lines = data.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-                        IEnumerable<string> filteredLines = lines.Where(line => !line.Contains("default_animation = \"loop\""));
-                        data = string.Join(Environment.NewLine, filteredLines);
-                    }
-                    else if (data.Contains("BoneGroups"))
-                    {
-                        data = @"version 2
+                        data = @"version 3
 extends ""Metadata/Parent""
 
-ClientAnimationController
+BaseAnimationEvents
 {
-	skeleton = ""Art/Models/Effects/enviro_effects/weather_attachments/generic_rig/weather_rig.ast""
 }
 
-BoneGroups
+AnimationController
 {
-	bone_group = ""box false aux_box1 aux_box2 aux_box3 ""
+	metadata = ""Art/Models/Effects/enviro_effects/weather_attachments/generic_rig/weather_rig.amd""
+}
+
+client
+{
+    ClientAnimationController
+    {
+        skeleton = ""Art/Models/Effects/enviro_effects/weather_attachments/generic_rig/weather_rig.ast""
+    }
+
+    BoneGroups
+    {
+        bone_group = ""box false aux_box1 aux_box2 aux_box3 ""
+    }
 }";
                     }
 
