@@ -55,6 +55,8 @@ public class ColorMods : IPatch
         new ColorModsOption("physical_immunity", "red", true),
         new ColorModsOption("cannot_have_life_leeched_from", "red", true),
         new ColorModsOption("cannot_have_mana_leeched_from", "red", true),
+        new ColorModsOption("remove % of current mana on hit", "red", true),
+        new ColorModsOption("remove % of current energy shield on hit", "red", true),
         // altars
         new ColorModsOption("life_mana_es_recovery_rate_+%_per_endurance_charge", "red", true),
         new ColorModsOption("global_defences_+%_per_frenzy_charge", "red", true),
